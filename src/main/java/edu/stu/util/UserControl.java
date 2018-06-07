@@ -2,6 +2,7 @@ package edu.stu.util;
 
 import edu.stu.bean.RandomUser;
 import edu.stu.dao.DBHelper;
+
 import java.io.UnsupportedEncodingException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,8 +10,8 @@ import java.util.Random;
 
 public class UserControl {
 
-    DBHelper dbHelper = new DBHelper();
-    RandomUser randomUser = null;
+    private DBHelper dbHelper = new DBHelper();
+    private RandomUser randomUser = null;
 
     public RandomUser getRandomUser() {
         int band = 10; // 初始随机数范围
@@ -66,7 +67,8 @@ public class UserControl {
     public void updateUser(int id, String msg) {
         String comments = "user is validated"; // 默认认为编号为id的这个用户是有效用户
         try {
-            comments = new String(msg.getBytes("iso-8859-1"), "utf-8");
+            //comments = new String(msg.getBytes("iso-8859-1"), "utf-8");
+            comments = new String(msg.getBytes("utf-8"), "utf-8");
             System.out.println(comments);
         } catch (UnsupportedEncodingException e) {
             System.out.println("edu.stu.util.UserControl.updateUser: UnsupportedEncodingException");
