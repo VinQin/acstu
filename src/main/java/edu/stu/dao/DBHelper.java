@@ -17,7 +17,7 @@ public class DBHelper {
 
     public DBHelper() {
         try {
-            Class.forName(name);//指定连接类型  
+            Class.forName(name);//静态加载指定连接类型  
             conn = DriverManager.getConnection(url, user, password);//获取连接  
 
         } catch (Exception e) {
