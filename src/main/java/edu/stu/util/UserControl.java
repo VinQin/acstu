@@ -16,7 +16,7 @@ public class UserControl {
     public RandomUser getRandomUser() {
         int band = 10; // 初始随机数范围
         String bandsql = "SELECT COUNT(*) FROM stu_users;";
-        dbHelper.getPst(bandsql);
+        dbHelper.setPst(bandsql);
 
         try {
             ResultSet res = dbHelper.pst.executeQuery();
@@ -40,7 +40,7 @@ public class UserControl {
 
     private boolean getRandomUser(int id) throws SQLException {
         String sql = "SELECT userName,pwd,comments from stu_users where tag=true and id=" + id;
-        dbHelper.getPst(sql);
+        dbHelper.setPst(sql);
         ResultSet res = dbHelper.pst.executeQuery();
         boolean flag = false;
 
@@ -76,7 +76,7 @@ public class UserControl {
         }
         String sql =
                 "UPDATE stu_users SET tag=false,comments='" + comments + "' where id=" + id + ";";
-        dbHelper.getPst(sql);
+        dbHelper.setPst(sql);
         try {
             dbHelper.pst.executeUpdate();
             dbHelper.pst.close();

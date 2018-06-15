@@ -1,13 +1,17 @@
 package edu.stu.main;
 
 
+import edu.stu.bean.ClientInfo;
 import edu.stu.bean.RandomUser;
+import edu.stu.util.ClientAction;
+import edu.stu.util.ClientDao;
 import edu.stu.util.HttpPost2AC;
 import edu.stu.util.UserControl;
 import org.apache.commons.httpclient.NameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -86,6 +90,8 @@ public class Main {
 
     //使用org.apache.httpcomponents进行登录
     public static void loginPlus() {
+        ClientInfo client = new ClientAction().getClientInfo("somebody", true);
+
         UserControl userControl = new UserControl();
         HttpPost2AC login = new HttpPost2AC();
         Map<String, String> param = new HashMap<>();
@@ -101,6 +107,10 @@ public class Main {
                 break;
             }
             param.put("userName", user.getUsername());
+
+            client.setUserName(user.getUsername());//记录用户所使用的登录账户
+            client.setDate(new Date());//记录用户本次登录时间
+
             param.put("pwd", user.getPassword());
             login.setUrl(url_ipv4);
             String jsonResult = login.requestForHttp(param);
@@ -120,16 +130,26 @@ public class Main {
                 login.setUrl(url_ipv6);
                 login.requestForHttp(param);
                 userControl.close();
+
+                client.setTag(true);//标记用户所使用的账户登录有效
+                client.setDate(new Date());//更新一下时间
+                ClientDao.addClient(client);//往数据库中添加一条用户登录行为的记录
+
             } else {
                 //若此用户未通过AC的验证，则在数据库中标记该用户为无效用户
                 userControl.updateUser(user.getId(), msg);
                 System.out.println("重新尝试中...");
                 param.remove("userName");
                 param.remove("pwd");
+
+                client.setTag(false);//标记用户所使用的账户登录无效
+                client.setDate(new Date());//更新一下时间
+                ClientDao.addClient(client);//往数据库中添加一条用户登录行为的记录
             }
 
 
         } while (!flag);
+
     }
 
 }

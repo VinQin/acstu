@@ -9,7 +9,8 @@ public class DBHelper {
     public static final String url = "jdbc:mysql://10.39.27.88/ac?useSSL=false&characterEncoding=UTF-8";
     public static final String name = "com.mysql.jdbc.Driver";
     public static final String user = "acmanipulator";
-    public static final String password = "Professorcai";
+    //TODO...
+    public static final String password = "Professorcai2";
 
     public Connection conn = null;
     public PreparedStatement pst = null;
@@ -25,7 +26,7 @@ public class DBHelper {
         }
     }
 
-    public void getPst(String sql) {
+    public void setPst(String sql) {
         try {
             pst = conn.prepareStatement(sql);//准备执行语句
         } catch (SQLException e) {
